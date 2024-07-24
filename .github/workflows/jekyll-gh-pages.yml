@@ -36,6 +36,8 @@ jobs:
         with:
           source: ./
           destination: ./_site
+      - name: List _site directory
+        run: ls -R ./_site  # Debug step to list contents of the _site directory
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
@@ -58,6 +60,8 @@ jobs:
         with:
           name: site-artifact
           path: ./_site
+      - name: List downloaded directory
+        run: ls -R ./_site  # Debug step to list contents of the _site directory after download
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3
