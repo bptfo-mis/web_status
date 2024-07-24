@@ -1,10 +1,8 @@
 name: Scheduled Health Check
 
-# Controls when the action will run.
 on:
   schedule:
-    - cron: "30 * * * *"
-  # Allows you to run this workflow manually from the Actions tab
+    - cron: "30 * * * *"  # Runs every hour at the 30th minute
   workflow_dispatch:
 
 jobs:
@@ -12,7 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Check all sites
     steps:
-      - uses: actions/checkout@v2
-      - name: Run Shell Script
-        id: shell_script_run
-        run: bash ./health-check.sh
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Run Health Check Script
+        run: |
+          chmod +x ./health-check.sh
+          ./health-check.sh
+
+      - name: Debug - List Files
+        run: ls -al logs

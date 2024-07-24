@@ -1,18 +1,21 @@
+#!/bin/bash
+
 # In the original repository we'll just print the result of status checks,
 # without committing. This avoids generating several commits that would make
 # later upstream merges messy for anyone who forked us.
-commit=false
+commit=true
 origin=$(git remote get-url origin)
-# if [[ $origin == *bptfo-mis/web_status* ]]
-# then
-#   commit=false
-# fi
 
 KEYSARRAY=()
 URLSARRAY=()
 
 urlsConfig="./urls.cfg"
 echo "Reading $urlsConfig"
+if [[ ! -f "$urlsConfig" ]]; then
+  echo "Error: $urlsConfig file not found!"
+  exit 1
+fi
+
 while read -r line
 do
   echo "  $line"
@@ -25,6 +28,10 @@ echo "***********************"
 echo "Starting health checks with ${#KEYSARRAY[@]} configs:"
 
 mkdir -p logs
+if [[ $? -ne 0 ]]; then
+  echo "Error: Failed to create logs directory"
+  exit 1
+fi
 
 for (( index=0; index < ${#KEYSARRAY[@]}; index++))
 do
@@ -46,13 +53,14 @@ do
     sleep 5
   done
   dateTime=$(date +'%Y-%m-%d %H:%M')
-  if [[ $commit == true ]]
-  then
-    echo $dateTime, $result >> "logs/${key}_report.log"
+  log_entry="$dateTime, $result"
+  echo "    $log_entry"
+  if [[ $commit == true ]]; then
+    echo "$log_entry" >> "logs/${key}_report.log"
     # By default we keep 2000 last log entries.  Feel free to modify this to meet your needs.
     echo "$(tail -2000 logs/${key}_report.log)" > "logs/${key}_report.log"
   else
-    echo "    $dateTime, $result"
+    echo "$log_entry" >> "logs/${key}_report.log"
   fi
 done
 
