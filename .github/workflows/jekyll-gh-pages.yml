@@ -28,9 +28,9 @@ jobs:
     if: "!github.event.schedule"  # This ensures the job only runs on push, PR, or manual dispatch
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v3
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
@@ -51,6 +51,8 @@ jobs:
     needs: build_and_deploy
     if: "!github.event.schedule"
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -58,7 +60,7 @@ jobs:
           path: ./_site
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v3
 
   # Health check job
   health_check_job:
@@ -67,7 +69,7 @@ jobs:
     name: Check all sites
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       - name: Run Shell Script
         id: shell_script_run
         run: bash ./health-check.sh
