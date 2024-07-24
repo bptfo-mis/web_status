@@ -1,44 +1,42 @@
 name: Jekyll Build
 
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - main
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
 jobs:
-  # Build and deploy job for Jekyll site
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
       - name: Setup Pages
         uses: actions/configure-pages@v3
+      
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
+      
       - name: List _site directory
         run: ls -R ./_site  # Debug step to list contents of the _site directory
+      
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: site-artifact
           path: ./_site
+      
+      - name: Verify Artifact Upload Path
+        run: if [ -d "./_site" ]; then echo "Directory exists"; else echo "Directory does not exist"; fi
+        shell: bash
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages
@@ -48,14 +46,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: site-artifact
           path: ./_site
+      
       - name: List downloaded directory
         run: ls -R ./_site  # Debug step to list contents of the _site directory after download
+      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3
-
