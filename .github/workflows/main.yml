@@ -5,6 +5,9 @@ on:
     - cron: "30 * * * *"  # Runs every hour at the 30th minute
   workflow_dispatch:
 
+permissions:
+  contents: write  # Ensures the GITHUB_TOKEN has write permissions
+
 jobs:
   health_check_job:
     runs-on: ubuntu-latest
@@ -17,6 +20,21 @@ jobs:
         run: |
           chmod +x ./health-check.sh
           ./health-check.sh
+          
+      - name: Configure Git for GitHub Actions
+        run: |
+          git config --global user.name 'Alvin Montiano'
+          git config --global user.email 'bptfomis@gmail.com'
 
+      - name: Commit and Push Logs
+        if: success()
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/bptfo-mis/web_status.git
+          git add -A --force logs/
+          git commit -m '[Automated] Update Health Check Logs'
+          git push origin HEAD:main
+          
       - name: Debug - List Files
         run: ls -al logs
