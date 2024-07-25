@@ -24,5 +24,3 @@ jobs:
       - name: Debug - List Files
         run: ls -al logs
         
-      - name: Trigger Deployment Workflow
-        uses: ./.github/workflows/build.yml
