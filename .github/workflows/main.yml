@@ -23,6 +23,3 @@ jobs:
               
       - name: Debug - List Files
         run: ls -al logs
-  call-build:
-    uses: ./.github/workflows/build.yml
-    secrets: inherit
