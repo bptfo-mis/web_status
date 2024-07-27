@@ -1,4 +1,4 @@
-name: Scheduled Health Check
+name: Health Check and Deploy to Pages
 
 on:
   schedule:
@@ -7,9 +7,11 @@ on:
 
 permissions:
   contents: write  # Ensures the GITHUB_TOKEN has write permissions
+  pages: write     # Permissions for deploying to Pages
+  id-token: write
 
 jobs:
-  health_check_job:
+  health_check_and_deploy:
     runs-on: ubuntu-latest
     name: Check all sites
     steps:
@@ -20,7 +22,24 @@ jobs:
         run: |
           chmod +x ./health-check.sh
           ./health-check.sh
-              
+
       - name: Debug - List Files
         run: ls -al logs
-        
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+
