@@ -232,9 +232,12 @@ function showTooltip(element, key, date, color,data_list) {
   const toolTipDiv = document.getElementById("tooltip");
   var print_status = '<div style="overflow:scroll;max-height:150px;">';
   for (const [time, value] of Object.entries(data_list)) {
-    const status = value === 1 ? "success" : "failed";
+    if(value === 1){
+        continue;
+    }
+    const status = "failed";
     const class_status = value === 1 ? "success" : "failure";
-    print_status += `${time} - <span class="${class_status}" style="border-radius:15px;padding: 0px 11px 2px 10px;">${status}</span><br>`;
+    print_status += `<p>${time} - <span class="${class_status}" style="border-radius:15px;padding: 0px 11px 2px 10px;">${status}</span></p>`;
   }
   print_status +="</div>";
   document.getElementById("tooltipDateTime").innerText = date.toDateString();
