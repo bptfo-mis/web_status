@@ -230,7 +230,7 @@ let tooltipTimeout = null;
 function showTooltip(element, key, date, color,data_list) {
   clearTimeout(tooltipTimeout);
   const toolTipDiv = document.getElementById("tooltip");
-  var print_status = '<div style="overflow:scroll;max-height:150px;">';
+  var print_status = '<div style="overflow:scroll;">'; //max-height:150px;
   for (const [time, value] of Object.entries(data_list)) {
     if(value === 1){
         continue;
