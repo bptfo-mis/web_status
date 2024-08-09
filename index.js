@@ -231,7 +231,7 @@ function showTooltip(element, key, date, color) {
 
   document.getElementById("tooltipDateTime").innerText = date.toDateString();
   document.getElementById("tooltipDescription").innerText =
-    getStatusDescriptiveText(color) + "<br>" + ;
+    getStatusDescriptiveText(color) + "<br>" + "test";
 
   const statusDiv = document.getElementById("tooltipStatus");
   statusDiv.innerText = getStatusText(color);
