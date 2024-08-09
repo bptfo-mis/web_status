@@ -164,7 +164,8 @@ function getDayAverage(val) {
   if (!val || val.length == 0) {
     return null;
   } else {
-    return val.reduce((a, v) => a + v) / val.length;
+    const sum = Object.values(val).reduce((acc, value) => acc + value, 0);
+    return sum / val.length;
   }
 }
 
