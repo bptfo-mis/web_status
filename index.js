@@ -8,6 +8,7 @@ async function genReportLog(container, key, url) {
   }
 
   const normalized = normalizeData(statusLines);
+  console.log(normalized);
   const statusStream = constructStatusStream(key, url, normalized);
   container.appendChild(statusStream);
 }
