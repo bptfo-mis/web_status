@@ -20,6 +20,7 @@ function constructStatusStream(key, url, uptimeData,data_list) {
   let streamContainer = templatize("statusStreamContainerTemplate");
   for (var ii = maxDays - 1; ii >= 0; ii--) {
     date.setDate(date.getDate() - ii);
+    console.log(date.toDateString());
     let list_data = data_list[date.toDateString()] || [];
     console.log(list_data);
     let line = constructStatusLine(key, ii, uptimeData[ii],list_data);
