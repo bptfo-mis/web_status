@@ -8,6 +8,7 @@ async function genReportLog(container, key, url) {
   }
 
   const normalized = normalizeData(statusLines);
+  console.log(normalized);
   const statusStream = constructStatusStream(key, url, normalized);
   container.appendChild(statusStream);
 }
@@ -144,7 +145,6 @@ function create(tag, className) {
 function normalizeData(statusLines) {
   const rows = statusLines.split("\n");
   const dateNormalized = splitRowsByDate(rows);
-  console.log(dateNormalized);
   let relativeDateMap = {};
   const now = Date.now();
   for (const [key, val] of Object.entries(dateNormalized)) {
