@@ -16,9 +16,13 @@ async function genReportLog(container, key, url) {
 
 function constructStatusStream(key, url, uptimeData,data_list) {
   console.log(uptimeData);
+  let date = new Date();
   let streamContainer = templatize("statusStreamContainerTemplate");
   for (var ii = maxDays - 1; ii >= 0; ii--) {
-    let line = constructStatusLine(key, ii, uptimeData[ii]);
+    date.setDate(date.getDate() - ii);
+    let list_data = data_list[date.toDateString()] || [];
+    console.log(list_data);
+    let line = constructStatusLine(key, ii, uptimeData[ii],list_data);
     streamContainer.appendChild(line);
   }
 
@@ -37,11 +41,11 @@ function constructStatusStream(key, url, uptimeData,data_list) {
   return container;
 }
 
-function constructStatusLine(key, relDay, upTimeArray) {
+function constructStatusLine(key, relDay, upTimeArray, data_list) {
   let date = new Date();
   date.setDate(date.getDate() - relDay);
 
-  return constructStatusSquare(key, date, upTimeArray);
+  return constructStatusSquare(key, date, upTimeArray,data_list);
 }
 
 function getColor(uptimeVal) {
@@ -54,7 +58,7 @@ function getColor(uptimeVal) {
     : "partial";
 }
 
-function constructStatusSquare(key, date, uptimeVal) {
+function constructStatusSquare(key, date, uptimeVal,data_list) {
   const color = getColor(uptimeVal);
   let square = templatize("statusSquareTemplate", {
     color: color,
@@ -62,7 +66,7 @@ function constructStatusSquare(key, date, uptimeVal) {
   });
 
   const show = () => {
-    showTooltip(square, key, date, color);
+    showTooltip(square, key, date, color,data_list);
   };
   square.addEventListener("mouseover", show);
   square.addEventListener("mousedown", show);
@@ -225,12 +229,12 @@ function splitRowsByDate(rows) {
 }
 
 let tooltipTimeout = null;
-function showTooltip(element, key, date, color) {
+function showTooltip(element, key, date, color,data_list) {
   clearTimeout(tooltipTimeout);
   const toolTipDiv = document.getElementById("tooltip");
-
+  console.log("here",data_list);
   document.getElementById("tooltipDateTime").innerText = date.toDateString();
-  document.getElementById("tooltipDescription").innerText =
+  document.getElementById("tooltipDescription").innerHTML =
     getStatusDescriptiveText(color) + "<br>" + "test";
 
   const statusDiv = document.getElementById("tooltipStatus");
