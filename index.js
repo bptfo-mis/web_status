@@ -15,14 +15,11 @@ async function genReportLog(container, key, url) {
 }
 
 function constructStatusStream(key, url, uptimeData,data_list) {
-  console.log(data_list);
   let streamContainer = templatize("statusStreamContainerTemplate");
   for (var ii = maxDays - 1; ii >= 0; ii--) {
      let date = new Date();
     date.setDate(date.getDate() - ii);
-    console.log(date.toDateString());
     let list_data = data_list[date.toDateString()] || [];
-    console.log(list_data);
     let line = constructStatusLine(key, ii, uptimeData[ii],list_data);
     streamContainer.appendChild(line);
   }
@@ -233,10 +230,15 @@ let tooltipTimeout = null;
 function showTooltip(element, key, date, color,data_list) {
   clearTimeout(tooltipTimeout);
   const toolTipDiv = document.getElementById("tooltip");
-  console.log("here",data_list);
+  var print_status = '';
+  for (const [time, value] of Object.entries(data)) {
+    const status = value === 1 ? "success" : "failed";
+    const class_status = value === 1 ? "success" : "failure";
+    print_status += `${time} - <div class="${class_status}" style="border-radius:15px;">${status}</div><br>`;
+  }
   document.getElementById("tooltipDateTime").innerText = date.toDateString();
   document.getElementById("tooltipDescription").innerHTML =
-    getStatusDescriptiveText(color) + "<br>" + "test";
+    getStatusDescriptiveText(color) + "<br>" + print_status;
 
   const statusDiv = document.getElementById("tooltipStatus");
   statusDiv.innerText = getStatusText(color);
