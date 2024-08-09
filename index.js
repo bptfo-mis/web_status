@@ -15,7 +15,7 @@ async function genReportLog(container, key, url) {
 }
 
 function constructStatusStream(key, url, uptimeData,data_list) {
-  console.log(uptimeData);
+  console.log(data_list);
   let date = new Date();
   let streamContainer = templatize("statusStreamContainerTemplate");
   for (var ii = maxDays - 1; ii >= 0; ii--) {
