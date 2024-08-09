@@ -234,7 +234,7 @@ function showTooltip(element, key, date, color,data_list) {
   for (const [time, value] of Object.entries(data_list)) {
     const status = value === 1 ? "success" : "failed";
     const class_status = value === 1 ? "success" : "failure";
-    print_status += `${time} - <span class="${class_status}" style="border-radius:15px;padding: 0px 11px 2px 10px;">${status}</span>`;
+    print_status += `${time} - <span class="${class_status}" style="border-radius:15px;padding: 0px 11px 2px 10px;">${status}</span><br>`;
   }
   print_status +="</div>";
   document.getElementById("tooltipDateTime").innerText = date.toDateString();
