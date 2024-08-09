@@ -8,7 +8,9 @@ async function genReportLog(container, key, url) {
   }
 
   const normalized = normalizeData(statusLines);
-  console.log(normalized);
+  const t_rows = statusLines.split("\n");
+  const t_dateNormalized = splitRowsByDate(t_rows);
+  console.log(t_dateNormalized);
   const statusStream = constructStatusStream(key, url, normalized);
   container.appendChild(statusStream);
 }
