@@ -185,24 +185,32 @@ function splitRowsByDate(rows) {
     const dateTime = new Date(Date.parse(dateTimeStr.replace(/-/g, "/") + " GMT"));
     const dateStr = dateTime.toDateString();
     const timeStr = dateTime.toTimeString().split(' ')[0].slice(0, 5);
-    let resultArray = dateValues[dateStr];
-    console.log(resultArray);
-    if (!resultArray) {
-      resultArray = [];
-      dateValues[dateStr] = resultArray;
+
+    if (!dateValues[dateStr]) {
+      dateValues[dateStr] = {};
       if (dateValues.length > maxDays) {
         break;
       }
     }
-
+    
     let result = 0;
-    if (resultStr.trim() == "success") {
+    // Initialize time array if not already present
+    if (!dateValues[dateStr][timeStr]) {
+      dateValues[dateStr][timeStr] = result; // Initialize with 0 (failure)
+    }
+  
+    // Record result
+    if (resultStr.trim() === "success") {
       result = 1;
     }
+    
+    // Update the result for the specific time on the specific date
+    dateValues[dateStr][timeStr] = result;
+
+    // Update global uptime metrics
     sum += result;
     count++;
-
-    resultArray.push(result);
+  
   }
 
   const upTime = count ? ((sum / count) * 100).toFixed(2) + "%" : "--%";
