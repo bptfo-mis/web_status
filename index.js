@@ -231,7 +231,7 @@ function showTooltip(element, key, date, color,data_list) {
   clearTimeout(tooltipTimeout);
   const toolTipDiv = document.getElementById("tooltip");
   var print_status = '';
-  for (const [time, value] of Object.entries(data)) {
+  for (const [time, value] of Object.entries(data_list)) {
     const status = value === 1 ? "success" : "failed";
     const class_status = value === 1 ? "success" : "failure";
     print_status += `${time} - <div class="${class_status}" style="border-radius:15px;">${status}</div><br>`;
