@@ -10,12 +10,12 @@ async function genReportLog(container, key, url) {
   const normalized = normalizeData(statusLines);
   const t_rows = statusLines.split("\n");
   const t_dateNormalized = splitRowsByDate(t_rows);
-  console.log(t_dateNormalized);
-  const statusStream = constructStatusStream(key, url, normalized);
+  const statusStream = constructStatusStream(key, url, normalized,t_dateNormalized);
   container.appendChild(statusStream);
 }
 
-function constructStatusStream(key, url, uptimeData) {
+function constructStatusStream(key, url, uptimeData,data_list) {
+  console.log(uptimeData);
   let streamContainer = templatize("statusStreamContainerTemplate");
   for (var ii = maxDays - 1; ii >= 0; ii--) {
     let line = constructStatusLine(key, ii, uptimeData[ii]);
@@ -231,7 +231,7 @@ function showTooltip(element, key, date, color) {
 
   document.getElementById("tooltipDateTime").innerText = date.toDateString();
   document.getElementById("tooltipDescription").innerText =
-    getStatusDescriptiveText(color);
+    getStatusDescriptiveText(color) + "<br>" + ;
 
   const statusDiv = document.getElementById("tooltipStatus");
   statusDiv.innerText = getStatusText(color);
